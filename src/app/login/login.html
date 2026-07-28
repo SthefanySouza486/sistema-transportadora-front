@@ -1,0 +1,49 @@
+<div class="min-h-screen w-full bg-gray-950 flex flex-col justify-center items-center p-4">
+  
+  <div class="w-full max-w-md bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 p-8">
+    
+    <div class="flex justify-center mb-8">
+      <img src="logo.png" alt="Silva & Souza" class="h-24 w-auto object-contain">
+    </div>
+
+    <div class="text-center mb-6">
+      <h2 class="text-xl font-bold text-white tracking-tight">Controle de Frota e Logística</h2>
+      <p class="text-gray-400 text-xs mt-1">Insira as suas credenciais para acessar ao sistema.</p>
+    </div>
+
+    @<!-- MENSAGEM DE ERRO VISUAL -->
+        @if (erroLogin) {
+          <div class="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded mb-6 text-sm text-center font-semibold">
+            Acesso negado: E-mail ou senha incorretos.
+          </div>
+        }
+    
+    <form [formGroup]="formularioLogin" (ngSubmit)="entrar()" class="space-y-5">
+      
+      <div>
+        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Utilizador / E-mail</label>
+        <input type="text" formControlName="usuario" placeholder="exemplo@silvasouza.com"
+               class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition-all text-sm">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Senha de Acesso</label>
+        <input type="password" formControlName="senha" placeholder="••••••••"
+               class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition-all text-sm">
+      </div>
+
+      <div class="pt-2">
+        <button type="submit" [disabled]="formularioLogin.invalid"
+                class="w-full py-3 bg-yellow-500 text-gray-950 font-bold rounded-lg hover:bg-yellow-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-md text-sm uppercase tracking-wider">
+          Entrar no Sistema
+        </button>
+      </div>
+
+    </form>
+
+    <div class="mt-8 text-center border-t border-gray-800 pt-4">
+      <p class="text-xs text-gray-500">Silva & Souza &copy; 2026</p>
+    </div>
+
+  </div>
+</div>
