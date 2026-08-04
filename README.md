@@ -1,59 +1,28 @@
-# TransportadoraFrontend
+# 🚚 Sistema de Gestão para Transportadora - Front-end
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.5.
+> 🚧 **Status do Projeto: Em Construção (Trabalho de Conclusão de Curso - TCC)** 🚧
+>
+> *Aviso: Este repositório contém o código-fonte do front-end de um projeto acadêmico que está atualmente em fase de desenvolvimento.*
 
-## Development server
+## 🔗 Repositório Relacionado
+Este projeto é a interface de usuário (UI) do sistema. A API e a lógica de negócios estão separadas no repositório do back-end:
+* **Acessar o repositório do Back-end (Java/Spring Boot) https://github.com/SthefanySouza486/sistema-transportadora.git**
 
-To start a local development server, run:
+## 📖 Sobre o Projeto
+Este é o front-end web desenvolvido para digitalizar e otimizar a gestão financeira e logística de uma transportadora. O objetivo principal é fornecer uma interface intuitiva e responsiva para que gestores e motoristas possam interagir com o sistema, substituindo os controles manuais por uma plataforma centralizada.
 
-```bash
-ng serve
-```
+## 🚀 Tecnologias Utilizadas
+A interface foi construída buscando performance e componentização, utilizando:
+* **Angular** (Framework TypeScript)
+* **TypeScript** (Tipagem estática)
+* **HTML5 / CSS3** (Estruturação e estilização)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 💡 Principais Funcionalidades (Interface)
+- [x] Telas de Autenticação de Usuários (Gestor e Motorista) - *Em desenvolvimento*
+- [x] Formulários e listagens para Cadastro de Motoristas e Veículos
+- [x] Interface para Registro de Viagens e visualização de frete/comissão
+- [x] Telas para lançamento de despesas de rota
+- [x] Painel de fechamento financeiro e controle de extratos
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+*Desenvolvido por Sthefany Souza - 2025/2026*
