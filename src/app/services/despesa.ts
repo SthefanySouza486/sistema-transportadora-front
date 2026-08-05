@@ -5,7 +5,7 @@ import { Despesa } from '../models/despesa';
 
 @Injectable({ providedIn: 'root'})
 export class DespesaService {
-    private apiUrl = 'https://sistema-transportadora-silva-e-souza.onrender.com/api/despesas'; 
+    private apiUrl = 'https://sistema-transportadora-1k5f.onrender.com/api/despesas'; 
 
     constructor(private http: HttpClient) { }
 
