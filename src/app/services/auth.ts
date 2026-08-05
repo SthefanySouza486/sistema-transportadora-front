@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root'})
 export class AuthService {
-    private apiUrl = 'https://sistema-transportadora-silva-e-souza.onrender.com/api/auth'; 
+    private apiUrl = 'https://sistema-transportadora-1k5f.onrender.com/api/auth'; 
 
     constructor(private http: HttpClient) { }
 
