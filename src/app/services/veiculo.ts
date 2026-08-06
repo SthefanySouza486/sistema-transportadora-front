@@ -5,7 +5,7 @@ import { Veiculo } from '../models/veiculo';
 
 @Injectable({ providedIn: 'root'})
 export class VeiculoService {
-    private apiUrl = 'https://sistema-transportadora-1k5f.onrender.com/api/veiculos'; 
+    private apiUrl = 'http://localhost:8080/api/veiculos'; 
     constructor(private http: HttpClient) { }
 
     listarTodos(): Observable<Veiculo[]> {

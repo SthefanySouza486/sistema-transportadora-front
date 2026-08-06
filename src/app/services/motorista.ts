@@ -7,7 +7,7 @@ import { Motorista } from '../models/motorista';
   providedIn: 'root'
 })
 export class MotoristaService {
-  private apiUrl = 'https://sistema-transportadora-1k5f.onrender.com/api/motoristas';
+  private apiUrl = 'http://localhost:8080/api/motoristas';
 
   constructor(private http: HttpClient) { }
 
