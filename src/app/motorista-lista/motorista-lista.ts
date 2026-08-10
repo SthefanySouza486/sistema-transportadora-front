@@ -13,6 +13,9 @@ import { Observable, catchError, of } from 'rxjs';
 })
 export class MotoristaListaComponent implements OnInit {
   motoristas$: Observable<Motorista[]> | undefined; 
+  exibindoModalExclusao: boolean = false; 
+  idMotoristaExcluir: number | null = null; 
+  mensagemErro: string = ''; 
 
   
   constructor(private service: MotoristaService) {}
@@ -30,14 +33,32 @@ export class MotoristaListaComponent implements OnInit {
       })
     );
   }
+  
+  abrirModalExclusao(id: number | undefined): void {
+    if (id) {
+      this.idMotoristaExcluir = id; 
+      this.mensagemErro = ''; 
+      this.exibindoModalExclusao = true;
+    }
+  }
 
-  excluir(id: number | undefined): void {
-    if (id && confirm('Tem certeza que deseja excluir este motorista?')) {
-      this.service.excluir(id).subscribe({
+  fecharModalExclusao(): void {
+    this.exibindoModalExclusao = false; 
+    this.idMotoristaExcluir = null; 
+    this.mensagemErro = ''; 
+  }
+
+  confirmarExclusao(): void {
+    if(this.idMotoristaExcluir) {
+      this.service.excluir(this.idMotoristaExcluir).subscribe({
         next: () => {
+          this.fecharModalExclusao(); 
           this.carregarMotoristas();
         },
-        error: (err) => alert('Erro ao excluir. Verifique se ele não está vinculado a uma viagem.')
+        error: (err) => {
+          console.error(err); 
+          this.mensagemErro = 'Erro ao excluir. Verifique se ele não está vinculado a uma viagem.';
+        }
       });
     }
   }

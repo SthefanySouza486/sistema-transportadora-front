@@ -14,6 +14,7 @@ export class MotoristaFormComponent implements OnInit {
   formulario: FormGroup;
   idMotoristaEdicao: number | null = null;
   tituloFormulario = 'Cadastrar Novo Motorista';
+  mensagemErro: string = ''; 
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,32 +48,28 @@ export class MotoristaFormComponent implements OnInit {
 
 salvar(): void {
     if (this.formulario.valid) {
+      this.mensagemErro = ''; 
+      
       if (this.idMotoristaEdicao) {
-        
         this.service.atualizar(this.idMotoristaEdicao, this.formulario.value).subscribe({
           next: () => {
             this.router.navigate(['/motoristas']);
           },
           error: (err) => {
             console.error('Erro ao atualizar:', err);
-            const msg = err.error?.message || 'Erro no servidor ao atualizar o motorista.';
-            alert(msg);
+            this.mensagemErro = err.error?.message || 'Erro no servidor ao atualizar o motorista.';
           }
         });
-
       } else {
-        
         this.service.cadastrar(this.formulario.value).subscribe({
           next: () => {
             this.router.navigate(['/motoristas']);
           },
           error: (err) => {
             console.error('Erro ao cadastrar:', err);
-            const msg = err.error?.message || 'Erro no servidor ao cadastrar o motorista.';
-            alert(msg);
+            this.mensagemErro = err.error?.message || 'Erro no servidor ao cadastrar o motorista.';
           }
         });
-
       }
     } else {
       this.formulario.markAllAsTouched();

@@ -15,6 +15,9 @@ import { Observable, catchError, of } from 'rxjs';
 })
 export class VeiculoLista implements OnInit{
   veiculos$: Observable<Veiculo[]> | undefined; 
+  exibindoModalExclusao: boolean = false; 
+  idVeiculoExcluir: number | null = null; 
+  mensagemErro: string = ''; 
 
   constructor(private service: VeiculoService) { }
 
@@ -31,6 +34,35 @@ export class VeiculoLista implements OnInit{
       );
   }
 
+  abrirModalExclusao(id: number | undefined): void {
+    if (id) {
+      this.idVeiculoExcluir = id; 
+      this.mensagemErro = ''; 
+      this.exibindoModalExclusao = true; 
+    }
+  }
+
+  fecharModalExclusao(): void { 
+    this.exibindoModalExclusao = false; 
+    this.idVeiculoExcluir = null; 
+    this.mensagemErro = ''; 
+  }
+
+  confirmarExclusao() : void {
+    if (this.idVeiculoExcluir) {
+      this.service.excluir(this.idVeiculoExcluir).subscribe({
+        next: () => {
+          this.fecharModalExclusao(); 
+          this.carregarVeiculos();
+        }, 
+        error: (err) => {
+          console.error(err); 
+          this.mensagemErro = "Não foi possível excluir o veículo. Verifique se ele não possui viagens vinculadas.";
+        }
+      });
+    }
+  }
+
   excluir(id: number | undefined): void {
       if (id && confirm('Tem certeza que deseja excluir este veículo?')) {
           this.service.excluir(id).subscribe({
@@ -44,5 +76,14 @@ export class VeiculoLista implements OnInit{
               }
           });
       }
+  }
+
+  formatarTipo(tipo: string): string {
+    const dicionario: { [key: string]: string } = {
+      'CAVALO_MECANICO': 'Cavalo Mecânico',
+      'BITREM': 'Bitrem'
+    };
+    
+    return dicionario[tipo] || tipo;
   }
 }

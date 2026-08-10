@@ -6,12 +6,17 @@
       <p class="text-gray-400 text-sm mt-1 mb-0">Preencha as informações do veículo para compor a frota.</p>
     </div>
 
+    @if (mensagemErro) {
+  <div class="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded mb-6 text-sm text-center font-semibold">
+    {{ mensagemErro }}
+  </div>
+}
     <form [formGroup]="formulario" (ngSubmit)="salvar()" class="p-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-2">Placa do Veículo *</label>
-          <input type="text" formControlName="placa" placeholder="ABC-1234" 
+          <input type="text" formControlName="placa" (input)="mensagemErro = ''" placeholder="ABC-1234" 
                  class="w-full px-4 py-2 border rounded focus:ring-2 outline-none uppercase transition-colors"
                  [ngClass]="{'border-red-500 focus:ring-red-500': formulario.get('placa')?.invalid && formulario.get('placa')?.touched, 
                             'border-gray-300 focus:ring-yellow-500': !(formulario.get('placa')?.invalid && formulario.get('placa')?.touched)}">
@@ -22,16 +27,14 @@
 
         <div>
           <label class="block text-sm font-bold text-gray-700 mb-2">Tipo / Categoria *</label>
-          <select formControlName="tipo" 
+          <select formControlName="tipo" (change)="mensagemErro = ''"
                   class="w-full px-4 py-2 border rounded focus:ring-2 outline-none bg-white transition-colors"
                   [ngClass]="{'border-red-500 focus:ring-red-500': formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched, 
                              'border-gray-300 focus:ring-yellow-500': !(formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched)}">
             <option value="" disabled selected>Selecione...</option>
             <option value="CAVALO_MECANICO">Cavalo Mecânico</option>
-            <option value="CARRETA">Carreta</option>
-            <option value="TRUCK">Caminhão Truck</option>
-            <option value="TOCO">Caminhão Toco</option>
-            <option value="VUC">VUC (Veículo Urbano)</option>
+            <option value="BITREM">Bitrem</option>
+          
           </select>
           @if (formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched) {
             <p class="text-red-500 text-xs mt-1 font-semibold">Selecione o tipo do veículo.</p>
