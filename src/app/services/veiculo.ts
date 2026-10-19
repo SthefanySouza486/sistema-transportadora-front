@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Veiculo } from '../models/veiculo';
+import { getApiBaseUrl } from '../config/api';
 
 @Injectable({ providedIn: 'root'})
 export class VeiculoService {
-    private apiUrl = 'http://localhost:8080/api/veiculos'; 
+    private apiUrl = `${getApiBaseUrl()}/veiculos`; 
     constructor(private http: HttpClient) { }
 
     listarTodos(): Observable<Veiculo[]> {

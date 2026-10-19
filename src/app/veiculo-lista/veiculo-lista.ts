@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Veiculo } from '../models/veiculo';
 import { VeiculoService } from '../services/veiculo';
@@ -11,6 +11,7 @@ import { Observable, catchError, of } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './veiculo-lista.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './veiculo-lista.css',
 })
 export class VeiculoLista implements OnInit{
@@ -61,29 +62,5 @@ export class VeiculoLista implements OnInit{
         }
       });
     }
-  }
-
-  excluir(id: number | undefined): void {
-      if (id && confirm('Tem certeza que deseja excluir este veículo?')) {
-          this.service.excluir(id).subscribe({
-              next: () => {
-                  alert('Veículo excluído com sucesso!');
-                  this.carregarVeiculos();
-              },
-              error: (err) => {
-                  console.error(err);
-                  alert('Erro ao excluir veículo.');
-              }
-          });
-      }
-  }
-
-  formatarTipo(tipo: string): string {
-    const dicionario: { [key: string]: string } = {
-      'CAVALO_MECANICO': 'Cavalo Mecânico',
-      'BITREM': 'Bitrem'
-    };
-    
-    return dicionario[tipo] || tipo;
   }
 }

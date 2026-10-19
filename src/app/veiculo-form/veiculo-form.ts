@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { VeiculoService } from '../services/veiculo';
@@ -8,6 +8,7 @@ import { VeiculoService } from '../services/veiculo';
   selector: 'app-veiculo-form',
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './veiculo-form.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './veiculo-form.css',
 })
 export class VeiculoForm implements OnInit {
@@ -23,7 +24,8 @@ export class VeiculoForm implements OnInit {
   ) {
     this.formulario = this.formBuilder.group({
       placa: ['', Validators.required], 
-      tipo: ['', Validators.required]
+      placaCarreta1: [''], 
+      placaCarreta2: ['']
     });
   }
 
@@ -31,19 +33,35 @@ export class VeiculoForm implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.idVeiculoEdicao = Number(idParam);
-      this.service.buscarPorId(this.idVeiculoEdicao).subscribe(dados => {
-        this.formulario.patchValue(dados);
+      
+      this.service.buscarPorId(this.idVeiculoEdicao).subscribe({
+        next: (dados) => {
+          console.log('Dados recebidos do Java para edição:', dados); 
+        
+          this.formulario.patchValue({
+            placa: dados.placa,
+            placaCarreta1: dados.placaCarreta1,
+            placaCarreta2: dados.placaCarreta2
+          });
+        },
+        error: (err) => {
+          console.error('Erro ao buscar dados do veículo:', err);
+          this.mensagemErro = 'Não foi possível carregar os dados do veículo para edição.';
+        }
       });
     }
   }
+
 salvar(): void {
   if (this.formulario.valid) {
     this.mensagemErro = ''; 
 
     const dados = this.formulario.value;
-    const dadosParaEnviar = {
+    const dadosParaEnviar: any= {
       ...dados,
-      tipo: dados.tipo ? dados.tipo.toUpperCase().trim() : ''
+      placa: dados.placa ? dados.placa.toUpperCase().trim() : '',
+      placaCarreta1: dados.placaCarreta1 ? dados.placaCarreta1.toUpperCase().trim() : null,
+      placaCarreta2: dados.placaCarreta2 ? dados.placaCarreta2.toUpperCase().trim() : null
     };
 
     if (this.idVeiculoEdicao) {
