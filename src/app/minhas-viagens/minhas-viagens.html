@@ -1,0 +1,69 @@
+<div class="w-full flex flex-col">
+  
+  <div class="px-4 sm:px-8 py-6 bg-white border-b border-gray-200 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+    <div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 m-0">Olá, {{ nomeMotorista }} </h2>
+      <p class="text-gray-500 text-sm mt-1 mb-0">Acompanhe as suas viagens designadas e faça o lançamento de despesas.</p>
+    </div>
+  </div>
+
+  <div class="px-8 py-8 w-full">
+    @if (viagens$ | async; as viagens) {
+      @if (viagens.length === 0) {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 flex flex-col items-center justify-center min-h-[350px]">
+          <svg class="w-20 h-24 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-700">Você não possui viagens atribuídas no momento.</h3>
+          <p class="text-xs text-gray-400 mt-1">Aguarde o lançamento de uma nova viagem pelo seu gestor.</p>
+        </div>
+      } @else {
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden w-full">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600">
+              <thead class="bg-gray-50 text-gray-700 font-semibold text-xs uppercase border-b border-gray-200">
+                <tr>
+                  <th class="px-6 py-4">Origem / Destino</th>
+                  <th class="px-6 py-4">Veículo</th>
+                  <th class="px-6 py-4">Data Início</th>
+                  <th class="px-6 py-4">Status</th>
+                  <th class="px-6 py-4 text-right">Ações / Despesas</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                @for (viagem of viagens; track viagem.id) {
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 font-bold text-gray-900">
+                      {{ viagem.origem }} ➔ {{ viagem.destino }}
+                    </td>
+                    <td class="px-6 py-4 uppercase font-medium">
+                      {{ viagem.veiculoPlaca || viagem.veiculo?.placa || 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4">
+                      {{ viagem.dataInicio | date:'dd/MM/yyyy' }}
+                    </td>
+                    <td class="px-6 py-4">
+                      <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">
+                        {{ viagem.status || 'EM ANDAMENTO' }}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <a [routerLink]="['/despesas/viagem', viagem.id]" 
+                         class="bg-yellow-500 hover:bg-yellow-400 text-gray-950 font-bold px-4 py-2 rounded-lg text-xs transition-colors shadow-xs inline-flex items-center gap-1 cursor-pointer">
+                        <span></span> Lançar Despesa
+                      </a>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 flex items-center justify-center min-h-[300px]">
+        <h3 class="text-gray-500 font-medium">A carregar as suas viagens...</h3>
+      </div>
+    }
+  </div>
+</div>

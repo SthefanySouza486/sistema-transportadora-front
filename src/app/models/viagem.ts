@@ -1,8 +1,9 @@
 export interface Viagem {
     id?: number; 
     motoristaId: number; 
+    nomeMotorista?: string;
     veiculoId: number; 
-    dataViagem: String; 
+    dataViagem: string; 
     origem: string; 
     destino: string; 
     dinheiroEntregue?: number; 
