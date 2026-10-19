@@ -5,4 +5,7 @@ export interface Despesa {
     categoria: string; 
     valor: number; 
     dataDespesa: string;
+    fotoComprovante?: string;
+    motoristaId?: number;
+    nomeMotorista?: string;
 }

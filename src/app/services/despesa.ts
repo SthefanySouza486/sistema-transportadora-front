@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Despesa } from '../models/despesa';
+import { getApiBaseUrl } from '../config/api';
 
 @Injectable({ providedIn: 'root'})
 export class DespesaService {
-    private apiUrl = 'http://localhost:8080/api/despesas'; 
+    private apiUrl = `${getApiBaseUrl()}/despesas`; 
 
     constructor(private http: HttpClient) { }
 
@@ -19,6 +20,10 @@ export class DespesaService {
 
     buscarPorId(id: number): Observable<Despesa> {
         return this.http.get<Despesa>(`${this.apiUrl}/${id}`);
+    }
+
+    listarPorMotorista(motoristaId: number): Observable<Despesa[]> {
+        return this.http.get<Despesa[]>(`${this.apiUrl}/motorista/${motoristaId}`);
     }
 
     atualizar(id: number, despesa: Despesa): Observable<Despesa> {
