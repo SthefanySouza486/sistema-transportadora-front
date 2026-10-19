@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MotoristaService } from '../services/motorista';
 import { Motorista } from '../models/motorista';
@@ -9,8 +9,8 @@ import { Observable, catchError, of } from 'rxjs';
   selector: 'app-motorista-lista',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './motorista-lista.html'
-})
+  templateUrl: './motorista-lista.html',
+  changeDetection: ChangeDetectionStrategy.Eager,})
 export class MotoristaListaComponent implements OnInit {
   motoristas$: Observable<Motorista[]> | undefined; 
   exibindoModalExclusao: boolean = false; 

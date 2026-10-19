@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MotoristaService } from '../services/motorista';
+import { GestorService } from '../services/gestor';
 
 @Component({
   selector: 'app-motorista-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './motorista-form.html'
-})
+  templateUrl: './motorista-form.html',
+  changeDetection: ChangeDetectionStrategy.Eager,})
 export class MotoristaFormComponent implements OnInit {
   formulario: FormGroup;
   idMotoristaEdicao: number | null = null;
-  tituloFormulario = 'Cadastrar Novo Motorista';
   mensagemErro: string = ''; 
+  mostrarSenha: boolean = false; 
 
   constructor(
     private formBuilder: FormBuilder,
-    private service: MotoristaService,
+    private motoristaService: MotoristaService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -34,45 +35,44 @@ export class MotoristaFormComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.idMotoristaEdicao = Number(idParam);
-      this.tituloFormulario = 'Editar Motorista';
-      
-      this.service.buscarPorId(this.idMotoristaEdicao).subscribe(motorista => {
-        this.formulario.patchValue({
-          nome: motorista.nome,
-          telefone: motorista.telefone,
-          comissao: motorista.comissao
-        });
+      this.motoristaService.buscarPorId(this.idMotoristaEdicao).subscribe({
+        next: (dados) => {
+          this.formulario.patchValue(dados);
+          this.formulario.get('senha')?.clearValidators();
+          this.formulario.get('senha')?.updateValueAndValidity();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar dados do motorista:', err);
+          this.mensagemErro = 'Não foi possível carregar os dados para edição.';
+        }
       });
     }
   }
 
-salvar(): void {
+  salvar(): void {
     if (this.formulario.valid) {
-      this.mensagemErro = ''; 
-      
+      this.mensagemErro = '';
+      const dadosEnvio = this.formulario.getRawValue();
+
       if (this.idMotoristaEdicao) {
-        this.service.atualizar(this.idMotoristaEdicao, this.formulario.value).subscribe({
-          next: () => {
-            this.router.navigate(['/motoristas']);
-          },
-          error: (err) => {
-            console.error('Erro ao atualizar:', err);
-            this.mensagemErro = err.error?.message || 'Erro no servidor ao atualizar o motorista.';
-          }
+        this.motoristaService.atualizar(this.idMotoristaEdicao, dadosEnvio).subscribe({
+          next: () => this.router.navigate(['/motoristas']),
+          error: (err) => this.tratarErro(err)
         });
       } else {
-        this.service.cadastrar(this.formulario.value).subscribe({
-          next: () => {
-            this.router.navigate(['/motoristas']);
-          },
-          error: (err) => {
-            console.error('Erro ao cadastrar:', err);
-            this.mensagemErro = err.error?.message || 'Erro no servidor ao cadastrar o motorista.';
-          }
+        this.motoristaService.cadastrar(dadosEnvio).subscribe({
+          next: () => this.router.navigate(['/motoristas']),
+          error: (err) => this.tratarErro(err)
         });
       }
     } else {
       this.formulario.markAllAsTouched();
     }
   }
+
+  private tratarErro(err: any): void {
+    console.error('Erro na requisição:', err);
+    this.mensagemErro = err.error?.message || 'Erro do servidor ao processar o cadastro.';
+  }
 }
+

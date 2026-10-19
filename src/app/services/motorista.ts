@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Motorista } from '../models/motorista'; 
+import { getApiBaseUrl } from '../config/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MotoristaService {
-  private apiUrl = 'http://localhost:8080/api/motoristas';
+  private apiUrl = `${getApiBaseUrl()}/motoristas`;
 
   constructor(private http: HttpClient) { }
 
