@@ -10,30 +10,40 @@ import { DespesaLista } from './despesa-lista/despesa-lista';
 import { DespesaForm } from './despesa-form/despesa-form';
 import { Login } from './login/login';
 import { Dashboard } from './dashboard/dashboard';
+import { MinhasViagens } from './minhas-viagens/minhas-viagens';
+import { GestorLista } from './gestor-lista/gestor-lista';
+import { GestorForm } from './gestor-form/gestor-form';
+import { PagamentoForm } from './pagamento-form/pagamento-form';
+import { PagamentoLista } from './pagamento-lista/pagamento-lista';
 
 export const routes: Routes = [
   { path: 'login', component: Login }, 
   { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
 
-  // 1. EXCLUSIVO DO GESTOR (Administração)
+  // rotas exclusivas do gestor
   { path: 'motoristas', component: MotoristaListaComponent, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
   { path: 'motoristas/novo', component: MotoristaFormComponent, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
   { path: 'motoristas/editar/:id', component: MotoristaFormComponent, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
-  
   { path: 'veiculos', component: VeiculoLista, canActivate: [authGuard], data: { roles: ['GESTOR'] } }, 
   { path: 'veiculos/novo', component: VeiculoForm, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
   { path: 'veiculos/editar/:id', component: VeiculoForm, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
-  
-  // 2. ACESSO COMPARTILHADO (Ambos podem VER as listas)
+  { path: 'gestores', component: GestorLista, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
+  { path: 'gestores/novo', component: GestorForm, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
+  { path: 'gestores/editar/:id', component: GestorForm, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
+  { path: 'pagamentos/novo', component: PagamentoForm, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
+  { path: 'pagamentos/editar/:id', component: PagamentoForm, canActivate: [authGuard], data: { roles: ['GESTOR'] } },
+  { path: 'pagamentos', component: PagamentoLista, canActivate: [authGuard], data: { roles: ['GESTOR', 'MOTORISTA'] } },
+
+  // rotas tanto do gestor como do motorista
   { path: 'viagens', component: ViagemLista, canActivate: [authGuard] },
   { path: 'despesas', component: DespesaLista, canActivate: [authGuard] }, 
 
-  // 3. EXCLUSIVO DO MOTORISTA (Só ele pode CADASTRAR ou EDITAR)
-  { path: 'viagens/nova', component: ViagemForm, canActivate: [authGuard], data: { roles: ['MOTORISTA'] } },
-  { path: 'viagens/editar/:id', component: ViagemForm, canActivate: [authGuard], data: { roles: ['MOTORISTA'] } },
-  
-  { path: 'despesas/nova', component: DespesaForm, canActivate: [authGuard], data: { roles: ['MOTORISTA'] } },
-  { path: 'despesas/editar/:id', component: DespesaForm, canActivate: [authGuard], data: { roles: ['MOTORISTA'] } },
+  // rotas excluivas do motorista
+  { path: 'minhas-viagens', component: MinhasViagens, canActivate: [authGuard], data: { roles: ['MOTORISTA'] } },
+  { path: 'viagens/nova', component: ViagemForm, canActivate: [authGuard], data: { roles: ['MOTORISTA', 'GESTOR'] } },
+  { path: 'viagens/editar/:id', component: ViagemForm, canActivate: [authGuard], data: { roles: ['MOTORISTA', 'GESTOR'] } },
+  { path: 'despesas/nova', component: DespesaForm, canActivate: [authGuard], data: { roles: ['MOTORISTA', 'GESTOR'] } },
+  { path: 'despesas/editar/:id', component: DespesaForm, canActivate: [authGuard], data: { roles: ['MOTORISTA', 'GESTOR'] } },
   
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
